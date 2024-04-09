@@ -4,12 +4,79 @@ void printArray(long *array, int size);
 int findMaxBits(t_stack *stack); // Finds the max number of bits among all numbers in the stack
 int lstsize(t_stack *stack); // Returns the number of elements in the stack
 int isEmpty(t_stack *stack); // Checks if the stack is empty
-void pb(t_stack **a, t_stack **b); // Push top element of A to B
-void pa(t_stack **a, t_stack **b); // Push top element of B to A
-void ra(t_stack *a); // Rotate all elements of A up by 1
-void bitwiseSort(t_stack **a, t_stack **b);
-void correctOrder(t_stack **a, t_stack **b, int maxBits);
-int isSortedAscending(t_stack *stack);
+
+int findMaxBits(t_stack *stack) {
+    int maxBits = 0;
+    t_node *current = stack->head;
+    long maxValue = 0;
+    // Find the max value in the stack
+    while (current != NULL) {
+        if (current->data > maxValue) maxValue = current->data;
+        current = current->next;
+        if (current == stack->head) break; // Assuming circular linked list
+    }
+    // Calculate max bits needed for the max value
+    while (maxValue) {
+        maxValue >>= 1;
+        maxBits++;
+    }
+    return maxBits;
+}
+
+int isBitSet(int number, int bit) {
+    return (number >> bit) & 1;
+}
+
+void sortStackA(t_stack **a, t_stack **b) {
+    int maxBits = findMaxBits(*a);
+    for (int bit = 0; bit < maxBits; bit++) {
+        int size = lstsize(*a);
+        for (int i = 0; i < size; i++) {
+            // Assuming the top node is accessed directly from the stack's head
+            if (isBitSet((*a)->head->data, bit) == 0) {
+                pb(a, b);
+            } else {
+                ra(*a);
+            }
+        }
+        while (!isEmpty(*b)) {
+            pa(a, b);
+        }
+    }
+}
+
+
+void sortStack(t_stack **a, t_stack **b) {
+    int maxBits = findMaxBits(*a);
+    for (int bit = 0; bit < maxBits; bit++) {
+        int size = lstsize(*a);
+        for (int i = 0; i < size; i++) {
+            if (isBitSet((*a)->head->data, bit) == 1) {
+                pb(a, b);
+            } else {
+                ra(*a);
+            }
+        }
+
+        // Move elements back from B to A, ensuring those with bit 0 are now at the bottom
+        while (!isEmpty(*b)) {
+            pa(a, b);
+        }
+    }
+    // After the final iteration, stack A will be sorted in ascending order.
+}
+
+void reverseStackOrder(t_stack **a, t_stack **b) {
+    // Move all elements from A to B, reversing their order
+    while (!isEmpty(*a)) {
+        pb(a, b);
+    }
+    
+    // Move all elements back from B to A, maintaining the reversed order
+    while (!isEmpty(*b)) {
+        pa(a, b);
+    }
+}
 
 int	main(int argc, char **argv)
 {
@@ -22,13 +89,7 @@ int	main(int argc, char **argv)
 	a = array_to_stack(numbers_array, size);
 	b = (t_stack *)malloc(sizeof(t_stack));
     b->head = NULL;
-    // display(a);
-    // display(b);
-    if (!isSortedAscending(a)) {
-        bitwiseSort(&a, &b);
-        // Any additional sorting or order correction logic here...
-    }
-
+    sortStack(&a,&b);
     display(a);
 	free(numbers_array);
 	free_stack(a);
@@ -43,67 +104,6 @@ void printArray(long *array, int size) {
     printf("\n");
 }
 
-void bitwiseSort(t_stack **a, t_stack **b) {
-    int maxBits = findMaxBits(*a);
-
-    while(!isSortedAscending(*a))
-    {
-    for (int bit = 0; bit < maxBits; bit++) {
-        int size = lstsize(*a);
-        for (int i = 0; i < size; i++) {
-            t_node *node = (*a)->head; // Fetch the current head
-            if (((node->data >> bit) & 1) == 1) {
-                pb(a, b); // Execute pb if the bit is 1
-            } else {
-                ra(*a); // Execute ra to move to the next node
-            }
-        }
-        while (!isEmpty(*b)) {
-            pa(a, b);
-        }
-    }
-    }
-}
-
-
-
-void correctOrder(t_stack **a, t_stack **b, int maxBits) {
-    // After sorting, all elements are in reverse order in stack A.
-    // Push all elements to B, then back to A to reverse the order.
-    while (!isEmpty(*a)) {
-        pb(a, b);
-    }
-    while (!isEmpty(*b)) {
-        pa(a, b);
-    }
-}
-
-
-// Function to find the maximum number of bits required to represent any number in the stack
-int findMaxBits(t_stack *stack) {
-    if (isEmpty(stack)) {
-        return 0;
-    }
-
-    long maxVal = LONG_MIN;
-    t_node *current = stack->head;
-    do {
-        if (current->data > maxVal) {
-            maxVal = current->data;
-        }
-        current = current->next;
-    } while (current != stack->head);
-
-    int maxBits = 0;
-    while (maxVal != 0) {
-        maxBits++;
-        maxVal >>= 1; // Right-shift the value
-    }
-
-    return maxBits;
-}
-
-// Function to determine the size of the stack
 int lstsize(t_stack *stack) {
     if (isEmpty(stack)) {
         return 0;

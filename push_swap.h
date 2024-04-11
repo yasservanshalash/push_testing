@@ -6,6 +6,7 @@
 # include "unistd.h"
 # include <limits.h>
 # include <stdbool.h>
+
 typedef struct t_node
 {
 	long			data;
@@ -14,7 +15,6 @@ typedef struct t_node
 	struct t_node	*next;
 }					t_node;
 
-// Define the Stack structure
 typedef struct t_stack
 {
 	struct t_node	*head;
@@ -27,7 +27,8 @@ size_t				ft_strlen(const char *s);
 long				*return_numbers(int argc, char **argv, int *size);
 t_stack				*array_to_stack(long arr[], int size);
 int					duplicate_numbers(long *numbers, int size);
-void				display(t_stack *stack);
+void	display_row(t_stack *stack);
+void display_col(t_stack *stack);
 void				free_stack(t_stack *stack);
 int					swap(t_stack *stack);
 void				sa(t_stack *stack);

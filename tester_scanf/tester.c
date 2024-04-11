@@ -82,17 +82,18 @@ int main() {
     t_stack *b = initialize_stack(); // And this one
 
     // Example to add elements to stack A
-    push_to_stack(&a, 9);
-    push_to_stack(&a, 8);
-    push_to_stack(&a, 7);
-    push_to_stack(&a, 6);
     push_to_stack(&a, 5);
-    push_to_stack(&a, 40);
+    push_to_stack(&a, 4);
     push_to_stack(&a, 3);
-    push_to_stack(&a, 2);
     push_to_stack(&a, 1);
-    // Add the rest of your elements...
+    push_to_stack(&a, 2);
+    // push_to_stack(&a, 7);
+    // push_to_stack(&a, 8);
+    // push_to_stack(&a, 6);
 
+
+    // Add the rest of your elements...
+    display_col(a);
     printf("Initial state of stack A:\n");
     print_stack(a);
     printf("Initial state of stack B:\n");
@@ -101,11 +102,13 @@ int main() {
     while (scanf("%s", operation) != EOF) { // Read operations until EOF
         apply_operation(operation, &a, &b);
         printf("stack A: ");
-        print_stack(a);
+        display_col(a);
         printf("\n");
+        print_stack(a);
         printf("stack B: ");
         print_stack(b);
         printf("\n");
+        print_stack(b);
     }
 
     printf("Final state of stack A:\n");

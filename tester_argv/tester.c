@@ -83,16 +83,15 @@ int main(int argc, char **argv) {
 
     // Example to add elements to stack A
     // Note: This section might need adjustment if you also want to pass these initial values via argv
-    push_to_stack(&a, 9);
-    push_to_stack(&a, 8);
-    push_to_stack(&a, 7);
+    push_to_stack(&a, 70);
     push_to_stack(&a, 6);
-    push_to_stack(&a, 5);
-    push_to_stack(&a, 40);
-    push_to_stack(&a, 3);
-    push_to_stack(&a, 2);
     push_to_stack(&a, 1);
-
+    push_to_stack(&a, 18);
+    push_to_stack(&a, 40);
+    push_to_stack(&a, 44);
+    push_to_stack(&a, 45);
+    push_to_stack(&a, 90);
+    push_to_stack(&a, 69);
     // push_to_stack(&a, 9);
 
     printf("Initial state of stack A:\n");

@@ -45,15 +45,99 @@ void sortStackA(t_stack **a, t_stack **b) {
     }
 }
 
+// void sortStackAsc(t_stack** a, t_stack** b) {
+//     int maxBits = findMaxBits(*a);
+//     for (int bit = 0; bit < maxBits; bit++) {
+//         int size = lstsize(*a);
+//         for (int i = 0; i < size; i++) {
+//             int mask = 1 << bit; // Calculate mask for the current bit
+//             if (((*a)->head->data & mask) == 0) {
+//                 // If the bit is not set, perform action A (rotate)
+//                 ra(*a);
+//             } else {
+//                 // If the bit is set, perform action B (push to B)
+//                 pb(a, b);
+//             }
+//         }
 
-void sortStack(t_stack **a, t_stack **b) {
+//         // Move elements back from B to A, ensuring those with bit 0 are now at the bottom
+//         while (!isEmpty(*b)) {
+//             pa(a, b);
+//         }
+//     }
+//     // After the final iteration, stack A will be sorted in ascending order.
+// }
+int is_sorted(t_stack *list) {
+    if (list == NULL || list->head == NULL || list->head->next == NULL) {
+        // Empty list or single element is considered sorted
+        return 1;
+    }
+
+    t_node *current = list->head;
+    t_node *prev = current;
+    current = current->next;
+
+    do {
+        if (prev->data > current->data) {
+            // Not sorted
+            return 0;
+        }
+
+        prev = current;
+        current = current->next;
+    } while (current != list->head); // Loop until we reach the head again
+
+    // Reached the end (head) without finding any unsorted elements
+    return 1;
+}
+
+void sortStackAsc(t_stack** a, t_stack** b) {
+    while (!isEmpty(*a) && !is_sorted(*a)) {
+        // Find the smallest element in stack a
+        int min = (*a)->head->data;
+        int size = lstsize(*a);
+        int minIndex = 0;
+        for (int i = 0; i < size; i++) {
+            if ((*a)->head->data < min) {
+                min = (*a)->head->data;
+                minIndex = i;
+            }
+            ra(*a);
+        }
+
+        // Move the smallest element to the top of stack a
+        if (minIndex <= size / 2) {
+            for (int i = 0; i < minIndex; i++) {
+                ra(*a);
+            }
+        } else {
+            for (int i = 0; i < size - minIndex; i++) {
+                rra(*a);
+            }
+        }
+
+        // Push the smallest element to stack b
+        pb(a, b);
+    }
+
+    // Move all elements back to stack a
+    while (!isEmpty(*b)) {
+        pa(a, b);
+    }
+}
+
+
+void sortStackDesc(t_stack** a, t_stack** b) {
     int maxBits = findMaxBits(*a);
     for (int bit = 0; bit < maxBits; bit++) {
         int size = lstsize(*a);
         for (int i = 0; i < size; i++) {
-            if (isBitSet((*a)->head->data, bit) == 1) {
+            int mask = 1 << bit; // Calculate mask for the current bit
+            if (((*a)->head->data & mask) == 0) {
+                // If the bit is not set, perform action B (push to B) instead of A (rotate)
                 pb(a, b);
             } else {
+                // If the bit is set, perform action A (rotate) instead of B (push to B)
                 ra(*a);
             }
         }
@@ -63,8 +147,36 @@ void sortStack(t_stack **a, t_stack **b) {
             pa(a, b);
         }
     }
-    // After the final iteration, stack A will be sorted in ascending order.
+    // After the final iteration, stack A will be sorted in descending order.
 }
+
+void radix_sort(t_stack **a, t_stack **b) {
+    int max_bits = findMaxBits(*a);
+    t_node *current;
+
+    for (int k = 0; k < max_bits; k++) {
+        int count = 0; // count number of nodes in stack A
+        current = (*a)->head;
+        if (current != NULL) {
+            do {
+                t_node *next = current->next; // Save next node since current might move to B
+                count++;
+                if (((current->data >> k) & 1) == 0) {
+                    pb(a, b); // Push to B if current bit is 0
+                } else {
+                    ra(*a); // Rotate A to access the next node
+                }
+                current = next;
+            } while (count < max_bits && current != (*a)->head);
+        }
+
+        // Bring all elements back from B to A
+        while ((*b)->head != NULL) {
+            pa(a, b);
+        }
+    }
+}
+
 
 void reverseStackOrder(t_stack **a, t_stack **b) {
     // Move all elements from A to B, reversing their order
@@ -78,6 +190,7 @@ void reverseStackOrder(t_stack **a, t_stack **b) {
     }
 }
 
+
 int	main(int argc, char **argv)
 {
 	long	*numbers_array;
@@ -86,11 +199,36 @@ int	main(int argc, char **argv)
 	t_stack	*b;
 
 	numbers_array = return_numbers(argc, argv, &size);
+    // printArray(numbers_array, size);
 	a = array_to_stack(numbers_array, size);
 	b = (t_stack *)malloc(sizeof(t_stack));
     b->head = NULL;
-    sortStack(&a,&b);
-    display(a);
+    // printf("%d", is_sorted(a));
+    sortStackDesc(&a,&b);
+    // display_col(a);
+    // sa(a);
+    // display_col(a);
+    // pb(&a, &b);
+    // pb(&a, &b);
+    // pb(&a, &b);
+    // display_col(a);
+    // display_col(b);
+    // ra(a);
+    // rb(b);
+    // display_col(a);
+    // display_col(b);
+    // rra(a);
+    // rrb(b);
+    // display_col(a);
+    // display_col(b);
+    // sa(a);
+    // display_col(a);
+    // display_col(b);
+    // pa(&a, &b);
+    // pa(&a, &b);
+    // pa(&a, &b);
+    // display_col(a);
+    // display_col(b);
 	free(numbers_array);
 	free_stack(a);
 	free(b);

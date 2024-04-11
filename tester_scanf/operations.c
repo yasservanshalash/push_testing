@@ -59,17 +59,21 @@ void push_to(t_stack **dest, t_stack **src) {
         node->next->prev = node->prev;
         node->prev->next = node->next;
     }
-    node->next = node->prev = node; // Isolate node
-    
-    // Add node to dest as the last element (top of the stack)
+
+    // Prepare node for insertion
+    node->next = node->prev = NULL; // Isolate node, though not strictly necessary for a stack
+
+    // Add node to dest as the new head (top of the stack)
     if (!(*dest) || !(*dest)->head) { // If dest is empty
         (*dest)->head = node;
+        node->next = node->prev = node; // Make it circular by pointing to itself
     } else {
-        // Insert node before the head to make it the new top of the stack
-        node->prev = (*dest)->head->prev;
+        // Make node the new head of dest
         node->next = (*dest)->head;
-        (*dest)->head->prev->next = node;
-        (*dest)->head->prev = node;
+        node->prev = (*dest)->head->prev;
+        (*dest)->head->prev->next = node; // Connect the last node to the new node
+        (*dest)->head->prev = node; // This line is actually unnecessary for stack behavior
+        (*dest)->head = node;
     }
 }
 

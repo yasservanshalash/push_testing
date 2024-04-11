@@ -83,35 +83,33 @@ int main(int argc, char **argv) {
 
     // Example to add elements to stack A
     // Note: This section might need adjustment if you also want to pass these initial values via argv
-    push_to_stack(&a, 70);
-    push_to_stack(&a, 6);
+    push_to_stack(&a, 4);
+    push_to_stack(&a, 5);
+    push_to_stack(&a, 3);
+    push_to_stack(&a, 2);
     push_to_stack(&a, 1);
-    push_to_stack(&a, 18);
-    push_to_stack(&a, 40);
-    push_to_stack(&a, 44);
-    push_to_stack(&a, 45);
-    push_to_stack(&a, 90);
-    push_to_stack(&a, 69);
-    // push_to_stack(&a, 9);
+    push_to_stack(&a, 6);
+    push_to_stack(&a, 72);
+    push_to_stack(&a, 0);
 
     printf("Initial state of stack A:\n");
-    print_stack(a);
+    display_col(a);
     printf("Initial state of stack B:\n");
-    print_stack(b);
+    display_col(b);
 
     // Start processing operations from argv starting from index 1
     for (int i = 1; i < argc; i++) {
         apply_operation(argv[i], &a, &b);
         printf("After operation %s, stack A: ", argv[i]);
-        print_stack(a);
+        display_col(a);
         printf("After operation %s, stack B: ", argv[i]);
-        print_stack(b);
+        display_col(b);
     }
 
     printf("Final state of stack A:\n");
-    print_stack(a);
+    display_col(a);
     printf("Final state of stack B:\n");
-    print_stack(b);
+    display_col(b);
 
     // Free memory
     free_stack(a);

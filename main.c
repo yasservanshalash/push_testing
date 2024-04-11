@@ -97,7 +97,7 @@ void sortStackAsc(t_stack** a, t_stack** b) {
         int min = (*a)->head->data;
         int size = lstsize(*a);
         int minIndex = 0;
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size && !is_sorted(*a); i++) {
             if ((*a)->head->data < min) {
                 min = (*a)->head->data;
                 minIndex = i;
@@ -107,11 +107,11 @@ void sortStackAsc(t_stack** a, t_stack** b) {
 
         // Move the smallest element to the top of stack a
         if (minIndex <= size / 2) {
-            for (int i = 0; i < minIndex; i++) {
+            for (int i = 0; i < minIndex && !is_sorted(*a); i++) {
                 ra(*a);
             }
         } else {
-            for (int i = 0; i < size - minIndex; i++) {
+            for (int i = 0; i < size - minIndex && !is_sorted(*a); i++) {
                 rra(*a);
             }
         }
@@ -129,16 +129,16 @@ void sortStackAsc(t_stack** a, t_stack** b) {
 
 void sortStackDesc(t_stack** a, t_stack** b) {
     int maxBits = findMaxBits(*a);
-    for (int bit = 0; bit < maxBits; bit++) {
+    for (int bit = 0; bit < maxBits && !is_sorted(*a); bit++) {
         int size = lstsize(*a);
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size && !is_sorted(*a); i++) {
             int mask = 1 << bit; // Calculate mask for the current bit
             if (((*a)->head->data & mask) == 0) {
-                // If the bit is not set, perform action B (push to B) instead of A (rotate)
-                pb(a, b);
-            } else {
-                // If the bit is set, perform action A (rotate) instead of B (push to B)
+                // If the bit is not set, perform action A (rotate) instead of B (push to B)
                 ra(*a);
+            } else {
+                // If the bit is set, perform action B (push to B) instead of A (rotate)
+                pb(a, b);
             }
         }
 
@@ -147,8 +147,9 @@ void sortStackDesc(t_stack** a, t_stack** b) {
             pa(a, b);
         }
     }
-    // After the final iteration, stack A will be sorted in descending order.
+    // After the final iteration, stack A will be sorted in ascending order.
 }
+
 
 void radix_sort(t_stack **a, t_stack **b) {
     int max_bits = findMaxBits(*a);
@@ -203,11 +204,10 @@ int	main(int argc, char **argv)
 	a = array_to_stack(numbers_array, size);
 	b = (t_stack *)malloc(sizeof(t_stack));
     b->head = NULL;
-    // printf("%d", is_sorted(a));
+    display_col(a);
     sortStackDesc(&a,&b);
-    // display_col(a);
     // sa(a);
-    // display_col(a);
+    display_col(a);
     // pb(&a, &b);
     // pb(&a, &b);
     // pb(&a, &b);

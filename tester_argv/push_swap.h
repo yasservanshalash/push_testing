@@ -28,6 +28,7 @@ long				*return_numbers(int argc, char **argv, int *size);
 t_stack				*array_to_stack(long arr[], int size);
 int					duplicate_numbers(long *numbers, int size);
 void				display(t_stack *stack);
+void				display_col(t_stack *stack);
 void				free_stack(t_stack *stack);
 int					swap(t_stack *stack);
 void				sa(t_stack *stack);

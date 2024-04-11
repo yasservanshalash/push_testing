@@ -82,14 +82,14 @@ int main() {
     t_stack *b = initialize_stack(); // And this one
 
     // Example to add elements to stack A
+    push_to_stack(&a, 1);
     push_to_stack(&a, 5);
+    push_to_stack(&a, 2);
     push_to_stack(&a, 4);
     push_to_stack(&a, 3);
-    push_to_stack(&a, 1);
-    push_to_stack(&a, 2);
-    // push_to_stack(&a, 7);
-    // push_to_stack(&a, 8);
-    // push_to_stack(&a, 6);
+    push_to_stack(&a, 7);
+    push_to_stack(&a, 8);
+    push_to_stack(&a, 6);
 
 
     // Add the rest of your elements...

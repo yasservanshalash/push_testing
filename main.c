@@ -207,7 +207,7 @@ int	main(int argc, char **argv)
     // display_col(a);
     sortStackDesc(&a,&b);
     // sa(a);
-    // display_col(a);
+    display_col(a);
     // pb(&a, &b);
     // pb(&a, &b);
     // pb(&a, &b);

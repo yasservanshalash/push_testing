@@ -121,3 +121,43 @@ t_stack	*array_to_stack(long arr[], int size)
 	}
 	return (stack);
 }
+
+
+t_stack	*array_to_stack_asc(long arr[], int size)
+{
+	t_stack	*stack;
+	int		i;
+
+	stack = (t_stack *)malloc(sizeof(t_stack));
+	if (stack == NULL)
+		return (NULL);
+	stack->head = NULL;
+	i = 0;
+	while (i < size)
+	{
+		push(stack, arr[i]);
+		i++;
+	}
+	return (stack);
+}
+
+t_stack	*array_to_stack_desc(long arr[], int size)
+{
+    t_stack	*stack;
+    int		i;
+
+    // Allocate memory for the stack
+    stack = (t_stack *)malloc(sizeof(t_stack));
+    if (stack == NULL)
+        return (NULL);  // Return NULL if memory allocation fails
+
+    stack->head = NULL;
+    
+    // Start from the last element of the array and move to the first element
+    for (i = size - 1; i >= 0; i--)
+    {
+        push(stack, arr[i]);  // Push elements to the stack
+    }
+    
+    return stack;
+}

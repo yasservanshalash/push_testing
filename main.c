@@ -201,13 +201,12 @@ int	main(int argc, char **argv)
 
 	numbers_array = return_numbers(argc, argv, &size);
     // printArray(numbers_array, size);
-	a = array_to_stack(numbers_array, size);
+	a = array_to_stack_desc(numbers_array, size);
 	b = (t_stack *)malloc(sizeof(t_stack));
     b->head = NULL;
     // display_col(a);
-    sortStackDesc(&a,&b);
+    sortStackAsc(&a,&b);
     // sa(a);
-    display_col(a);
     // pb(&a, &b);
     // pb(&a, &b);
     // pb(&a, &b);

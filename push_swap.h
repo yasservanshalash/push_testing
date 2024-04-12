@@ -26,6 +26,8 @@ size_t				ft_strlcat(char *dst, const char *src, size_t size);
 size_t				ft_strlen(const char *s);
 long				*return_numbers(int argc, char **argv, int *size);
 t_stack				*array_to_stack(long arr[], int size);
+t_stack	*array_to_stack_asc(long arr[], int size);
+t_stack	*array_to_stack_desc(long arr[], int size);
 int					duplicate_numbers(long *numbers, int size);
 void	display_row(t_stack *stack);
 void display_col(t_stack *stack);
